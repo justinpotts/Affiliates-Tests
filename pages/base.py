@@ -29,6 +29,20 @@ class Base(Page):
     def is_user_logged_in(self):
         return self.is_element_present(*self._logout_locator)
 
+    def is_user_logged_out(self):
+        return self.selenium.find_element(*self._login_browser_id_locator)
+
+    def get_new_user(self):
+        url = "http://personatestuser.org/email/"
+        response = urllib2.urlopen(url).read()
+        decode = json.loads(response)
+        credentials = {
+            'email': decode['email'],
+            'password': decode['pass']
+        }
+
+        return credentials
+
     @property
     def username(self):
         return self.selenium.find_element(*self._username_locator).text

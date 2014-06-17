@@ -7,6 +7,7 @@
 import pytest
 
 from pages.start_page import StartPage
+from pages.base import Base
 from unittestzero import Assert
 
 
@@ -64,7 +65,7 @@ class TestProfilePage:
 
         edit_page_modal.set_website('http://wiki.mozilla.com/')
         edit_page_modal.click_save_my_changes()
-        Assert.equal(edit_page.view_website, 'http://wiki.mozilla.com/', 
+        Assert.equal(edit_page.view_website, 'http://wiki.mozilla.com/',
             "Failed because expected 'http://wiki.mozilla.com' but returned "
              + edit_page.view_website)
 
@@ -73,5 +74,18 @@ class TestProfilePage:
         edit_page_modal.set_website('')
         edit_page_modal.click_save_my_changes()
         edit_page_modal = edit_page.click_edit_profile()
-        Assert.equal(edit_page_modal.website, '', 
+        Assert.equal(edit_page_modal.website, '',
             'Clearing the website field failed.')
+
+    @credentials
+    @destructive
+    def test_new_account_creation_workflow(self, mozwebqa):
+        start_page = StartPage(mozwebqa)
+        home_page = start_page.login(start_page.get_new_user())
+        Assert.true(self.is_user_logged_in)
+
+        logged_out = home_page.logout()
+        Assert.true(self.is_user_logged_out)
+
+        logged_in = logged_out.login()
+        Assert.true(self.is_user_logged_in)
