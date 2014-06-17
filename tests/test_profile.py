@@ -8,6 +8,7 @@ import pytest
 
 from pages.start_page import StartPage
 from pages.base import Base
+from pages.persona_test import PersonaTest
 from unittestzero import Assert
 
 
@@ -80,8 +81,11 @@ class TestProfilePage:
     @credentials
     @destructive
     def test_new_account_creation_workflow(self, mozwebqa):
+        persona_user = PersonaTest(mozwebqa)
+        user = persona_user.get_new_user()
+
         start_page = StartPage(mozwebqa)
-        home_page = start_page.login(start_page.get_new_user())
+        home_page = start_page.login(user)
         Assert.true(self.is_user_logged_in)
 
         logged_out = home_page.logout()
