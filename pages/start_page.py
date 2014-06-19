@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.base import Base
+from pages.page import Page
 
 
 class StartPage(Base):

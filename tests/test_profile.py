@@ -66,6 +66,8 @@ class TestProfilePage:
         edit_page_modal.set_website('http://wiki.mozilla.com/')
         edit_page_modal.click_save_my_changes()
         Assert.equal(edit_page.view_website, 'http://wiki.mozilla.com/',
+        Assert.true(edit_page.is_website_visible())
+        Assert.equal(edit_page.view_website, 'http://wiki.mozilla.com/',
             "Failed because expected 'http://wiki.mozilla.com' but returned "
              + edit_page.view_website)
 
@@ -92,3 +94,20 @@ class TestProfilePage:
 
         logged_in = logged_out.login()
         Assert.true(logged_in.is_user_logged_in)
+
+    @credentials
+    @nondestructive
+    def test_verify_layout_logged_in_user(self, mozwebqa):
+        start_page = StartPage(mozwebqa)
+        home_page = start_page.login()
+        edit_page = home_page.click_profile()
+
+        Assert.true(edit_page.is_stats_section_visible())
+        Assert.true(edit_page.is_stats_ranking_visible())
+        Assert.not_none(edit_page.stats_ranking, 'Stats rankings is null')
+        Assert.true(edit_page.is_stats_banners_visible())
+        Assert.not_none(edit_page.stats_banners, 'Stats banners is null')
+        Assert.true(edit_page.is_stats_clicks_visible())
+        Assert.not_none(edit_page.stats_clicks, 'Stats clickss is null')
+        Assert.true(edit_page.is_milestones_section_visible())
+        Assert.true(edit_page.is_newsletter_form_visible())
