@@ -79,6 +79,7 @@ class TestProfilePage:
         Assert.equal(edit_page_modal.website, '',
             'Clearing the website field failed.')
 
+    @credentials
     @destructive
     def test_new_account_creation_workflow(self, mozwebqa):
         persona_user = PersonaTest(mozwebqa)
