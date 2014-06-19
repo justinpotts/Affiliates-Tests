@@ -7,7 +7,6 @@
 import pytest
 
 from pages.start_page import StartPage
-from pages.base import Base
 from pages.persona_test import PersonaTest
 from unittestzero import Assert
 
@@ -78,7 +77,6 @@ class TestProfilePage:
         Assert.equal(edit_page_modal.website, '',
             'Clearing the website field failed.')
 
-    @credentials
     @destructive
     def test_new_account_creation_workflow(self, mozwebqa):
         persona_user = PersonaTest(mozwebqa)
