@@ -5,11 +5,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
-from page import Page
+from pages.base import Base
 
 
-class StartPage(Page):
+class StartPage(Base):
 
     _page_title = 'Firefox Affiliates'
 
@@ -20,9 +21,20 @@ class StartPage(Page):
 
     def __init__(self, testsetup, open_url=True):
         """ Creates a new instance of the class and gets the page ready for testing """
-        Page.__init__(self, testsetup)
+        Base.__init__(self, testsetup)
         if open_url:
             self.selenium.get(self.base_url)
+
+    def create_new_user(self, user):
+        self.click_login_browser_id()
+        from browserid import BrowserID
+        pop_up = BrowserID(self.selenium, self.timeout)
+        pop_up.sign_in(user['email'], user['password'])
+
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_user_logged_in)
+
+        from pages.home import Home
+        return Home(self.testsetup)
 
     def login(self, user='default'):
         base = self.click_login_browser_id()

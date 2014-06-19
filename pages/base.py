@@ -29,19 +29,17 @@ class Base(Page):
     def is_user_logged_in(self):
         return self.is_element_present(*self._logout_locator)
 
-    def is_user_logged_out(self):
-        return self.selenium.find_element(*self._login_browser_id_locator)
-
-    
-
     @property
     def username(self):
         return self.selenium.find_element(*self._username_locator).text
 
-    def click_logout(self):
+    def logout(self):
         self._hover_user_menu()
         self.selenium.find_element(*self._logout_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(lambda s: not self.is_user_logged_in)
+
+        from pages.start_page import StartPage
+        return StartPage(self.testsetup)
 
     def click_profile(self):
         self._hover_user_menu()

@@ -85,11 +85,12 @@ class TestProfilePage:
         user = persona_user.get_new_user()
 
         start_page = StartPage(mozwebqa)
-        home_page = start_page.login(user)
-        Assert.true(self.is_user_logged_in)
+        home_page = start_page.create_new_user(user)
+
+        Assert.true(home_page.is_user_logged_in)
 
         logged_out = home_page.logout()
-        Assert.true(self.is_user_logged_out)
+        Assert.false(logged_out.is_user_logged_in)
 
         logged_in = logged_out.login()
-        Assert.true(self.is_user_logged_in)
+        Assert.true(logged_in.is_user_logged_in)
